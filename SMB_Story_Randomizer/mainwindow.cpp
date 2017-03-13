@@ -14,7 +14,13 @@ void MainWindow::setup(){
 
     QPushButton* toggleStoryListDisplayButton = findChild<QPushButton*>("toggleStoryListDisplay");
 
+    QPushButton* chooseRelButton = findChild<QPushButton*>("chooseRelButton");
+
+    QPushButton* writeToFileButton = findChild<QPushButton*>("writeButton");
+
     seedTextEdit = findChild<QTextEdit*>("seedTextEdit");
+
+    filepathTextEdit = findChild<QTextEdit*>("filepathTextEdit");
 
     allowDupesRadioButton = findChild<QRadioButton*>("alloeDupesRadioButton");
 
@@ -37,6 +43,9 @@ void MainWindow::setup(){
 
     connect(toggleStoryListDisplayButton, SIGNAL(clicked()), this, SLOT(toggleStoryListDisplay()));
 
+    connect(chooseRelButton, SIGNAL(clicked()), this, SLOT(chooseRelFile()));
+
+     connect(writeToFileButton, SIGNAL(clicked()), this, SLOT(writeToFile()));
 }
 
 MainWindow::~MainWindow()
@@ -153,4 +162,64 @@ void MainWindow::toggleStoryListDisplay(){
         storyListTableView->show();
     }
     storyListVisible = !storyListVisible;
+}
+
+void MainWindow::chooseRelFile(){
+    QString filename = QFileDialog::getOpenFileName(this, tr("Open Rel File"), NULL, tr("Rel Files (*.rel);;All Files (*.*)"));
+    if(filename.isNull()){
+        return;
+    }
+
+    filepathTextEdit->setText(filename);
+}
+
+void MainWindow::writeToFile(){
+    QString qFilename = filepathTextEdit->toPlainText();
+    std::cout << "Write Function" << std::endl;
+
+    if(qFilename.isEmpty() || qFilename.isNull()){
+        return;
+    }
+
+    FILE* relFile = fopen(qFilename.toStdString().c_str(), "r+");
+
+    if(relFile == NULL){
+        return;
+    }
+
+    std::cout << "Opened File" << std::endl;
+
+    int filesize;
+
+    fseek(relFile, 0, SEEK_END);
+    filesize = ftell(relFile);
+    fseek(relFile, 0, SEEK_SET);
+
+    if(filesize < 0x0020B448 + (4 * 100)){
+        fclose(relFile);
+        return;
+    }
+
+    std::cout << "File Large Enough" << std::endl;
+
+    fseek(relFile, 0x0020B448, SEEK_SET);
+    std::cout << ftell(relFile) << std::endl;
+    for(int i = 0; i < 100; ++i){
+        writeBigShort(relFile, storyList[i]);
+        fseek(relFile, 2, SEEK_CUR);
+        std::cout << storyList[i] << " ";
+    }
+    std::cout << std::endl;
+
+    fclose(relFile);
+    std::cout << "Done Writing" << std::endl;
+}
+
+void MainWindow::generateAndWriteToFile(){
+
+}
+
+void MainWindow::writeBigShort(FILE* file, int number){
+    putc((number >> 8), file);
+    putc((number), file);
 }

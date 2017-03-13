@@ -10,6 +10,8 @@
 #include <QTableView>
 #include <QStandardItemModel>
 #include <string>
+#include <QFileDialog>
+#include <stdio.h>
 
 namespace Ui {
 class MainWindow;
@@ -31,12 +33,14 @@ private:
     void generateStoryListWithoutDupes();
     void setupTable();
     void setupStandardStageNames();
+    void writeBigShort(FILE* file, int number);
 
     int storyList[100];
     int storyIdList[100];
     bool storyListVisible = true;
     QRadioButton* allowDupesRadioButton;
     QTextEdit* seedTextEdit;
+    QTextEdit* filepathTextEdit;
     QTableView* storyListTableView;
     QStandardItemModel* dataModel;
     QString* stageNames;
@@ -46,6 +50,9 @@ private:
 private slots:
     void generateButtonClicked();
     void toggleStoryListDisplay();
+    void chooseRelFile();
+    void writeToFile();
+    void generateAndWriteToFile();
 
 
 };

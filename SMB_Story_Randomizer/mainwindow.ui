@@ -58,9 +58,9 @@ p, li { white-space: pre-wrap; }
    <widget class="QLabel" name="label_2">
     <property name="geometry">
      <rect>
-      <x>250</x>
-      <y>20</y>
-      <width>51</width>
+      <x>260</x>
+      <y>30</y>
+      <width>151</width>
       <height>51</height>
      </rect>
     </property>
@@ -70,7 +70,7 @@ p, li { white-space: pre-wrap; }
      </font>
     </property>
     <property name="text">
-     <string>Rel</string>
+     <string>mkb2.main_loop.rel</string>
     </property>
     <property name="alignment">
      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -79,8 +79,8 @@ p, li { white-space: pre-wrap; }
    <widget class="QTextEdit" name="filepathTextEdit">
     <property name="geometry">
      <rect>
-      <x>310</x>
-      <y>10</y>
+      <x>420</x>
+      <y>20</y>
       <width>251</width>
       <height>71</height>
      </rect>
@@ -92,8 +92,8 @@ p, li { white-space: pre-wrap; }
    <widget class="QPushButton" name="chooseRelButton">
     <property name="geometry">
      <rect>
-      <x>600</x>
-      <y>40</y>
+      <x>680</x>
+      <y>50</y>
       <width>75</width>
       <height>23</height>
      </rect>
@@ -118,7 +118,7 @@ p, li { white-space: pre-wrap; }
    <widget class="QPushButton" name="writeButton">
     <property name="geometry">
      <rect>
-      <x>400</x>
+      <x>420</x>
       <y>100</y>
       <width>75</width>
       <height>23</height>
@@ -154,8 +154,8 @@ p, li { white-space: pre-wrap; }
    <widget class="QPushButton" name="toggleStoryListDisplay">
     <property name="geometry">
      <rect>
-      <x>210</x>
-      <y>110</y>
+      <x>190</x>
+      <y>130</y>
       <width>111</width>
       <height>23</height>
      </rect>
@@ -164,7 +164,7 @@ p, li { white-space: pre-wrap; }
      <string>Show/Hide Results</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="writeButton_2">
+   <widget class="QPushButton" name="genAndWriteButton">
     <property name="geometry">
      <rect>
       <x>520</x>
