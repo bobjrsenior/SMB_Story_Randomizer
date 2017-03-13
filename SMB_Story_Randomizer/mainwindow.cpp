@@ -12,6 +12,8 @@ void MainWindow::setup(){
 
     QPushButton* generateButton = findChild<QPushButton*>("generateButton");
 
+    QPushButton* toggleStoryListDisplayButton = findChild<QPushButton*>("toggleStoryListDisplay");
+
     seedTextEdit = findChild<QTextEdit*>("seedTextEdit");
 
     allowDupesRadioButton = findChild<QRadioButton*>("alloeDupesRadioButton");
@@ -27,9 +29,13 @@ void MainWindow::setup(){
 
     generateIdList();
 
+    setupStandardStageNames();
+
     setupTable();
 
     connect(generateButton, SIGNAL(clicked()), this, SLOT(generateButtonClicked()));
+
+    connect(toggleStoryListDisplayButton, SIGNAL(clicked()), this, SLOT(toggleStoryListDisplay()));
 
 }
 
@@ -84,7 +90,7 @@ void MainWindow::generateButtonClicked(){
 
     bool validInt = false;;
 
-    int seed = seedText.toInt(&validInt);
+    uint32_t seed = (uint32_t) seedText.toInt(&validInt);
 
     if(!validInt){
         std::cout << "Invalid Seed" << std::endl;
@@ -101,7 +107,11 @@ void MainWindow::generateButtonClicked(){
     }
 
     for(int i = 0; i < 100; ++i){
-        dataModel->setItem(i, 2, new QStandardItem(QString::number(storyList[i])));
+        if(storyList[i] >= 0 && storyList[i] <= 420){
+            dataModel->setItem(i, 2, new QStandardItem(QString::number(storyList[i])));
+
+            dataModel->setItem(i, 1, new QStandardItem(stageNames[storyList[i]]));
+        }
     }
 
 }
@@ -115,6 +125,32 @@ void MainWindow::generateStoryListWithDupes(){
 }
 
 void MainWindow::generateStoryListWithoutDupes(){
+    int copyList[100];
 
+    for(int i = 0; i < 100; ++i){
+        copyList[i] = storyIdList[i];
+    }
 
+    for(int i = 0; i < 100; ++i){
+        int index = rand() % (100 - i);
+        storyList[i] = copyList[index];
+        copyList[index] = copyList[100 - 1 - i];
+        copyList[100 - 1 - i] = storyList[i];
+    }
+
+}
+
+void MainWindow::setupStandardStageNames(){
+    stageNames = standardStageNames;
+
+}
+
+void MainWindow::toggleStoryListDisplay(){
+    if(storyListVisible){
+        storyListTableView->hide();
+    }
+    else{
+        storyListTableView->show();
+    }
+    storyListVisible = !storyListVisible;
 }
