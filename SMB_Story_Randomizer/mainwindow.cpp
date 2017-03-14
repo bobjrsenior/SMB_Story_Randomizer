@@ -18,6 +18,8 @@ void MainWindow::setup(){
 
     QPushButton* writeToFileButton = findChild<QPushButton*>("writeButton");
 
+    QPushButton* genAndWriteButton = findChild<QPushButton*>("genAndWriteButton");
+
     seedTextEdit = findChild<QTextEdit*>("seedTextEdit");
 
     filepathTextEdit = findChild<QTextEdit*>("filepathTextEdit");
@@ -45,7 +47,9 @@ void MainWindow::setup(){
 
     connect(chooseRelButton, SIGNAL(clicked()), this, SLOT(chooseRelFile()));
 
-     connect(writeToFileButton, SIGNAL(clicked()), this, SLOT(writeToFile()));
+    connect(writeToFileButton, SIGNAL(clicked()), this, SLOT(writeToFile()));
+
+    connect(genAndWriteButton, SIGNAL(clicked()), this, SLOT(generateAndWriteToFile()));
 }
 
 MainWindow::~MainWindow()
@@ -55,6 +59,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::setupTable(){
     dataModel = new QStandardItemModel(100, 3, this);
+    storyListTableView->verticalHeader()->setVisible(false);
 
     dataModel->setHorizontalHeaderItem(0, new QStandardItem(QString("Story Location")));
     dataModel->setHorizontalHeaderItem(1, new QStandardItem(QString("Stage Name")));
@@ -102,7 +107,7 @@ void MainWindow::generateButtonClicked(){
     uint32_t seed = (uint32_t) seedText.toInt(&validInt);
 
     if(!validInt){
-        std::cout << "Invalid Seed" << std::endl;
+        createAlert(QString("Invalid seeed (whole numbers only)"));
         return;
     }
 
@@ -122,6 +127,8 @@ void MainWindow::generateButtonClicked(){
             dataModel->setItem(i, 1, new QStandardItem(stageNames[storyList[i]]));
         }
     }
+
+    generated = true;
 
 }
 
@@ -174,20 +181,24 @@ void MainWindow::chooseRelFile(){
 }
 
 void MainWindow::writeToFile(){
+    if(!generated){
+        createAlert(QString("No Story List has been generated yet"));
+        return;
+    }
+
     QString qFilename = filepathTextEdit->toPlainText();
-    std::cout << "Write Function" << std::endl;
 
     if(qFilename.isEmpty() || qFilename.isNull()){
+        createAlert(QString("No Rel Path Given"));
         return;
     }
 
     FILE* relFile = fopen(qFilename.toStdString().c_str(), "r+");
 
     if(relFile == NULL){
+        createAlert(QString("Unable to open Rel file"));
         return;
     }
-
-    std::cout << "Opened File" << std::endl;
 
     int filesize;
 
@@ -197,29 +208,35 @@ void MainWindow::writeToFile(){
 
     if(filesize < 0x0020B448 + (4 * 100)){
         fclose(relFile);
+        createAlert(QString("File not big enough. Is this the right file (mkb2.main_loop.rel)?"));
         return;
     }
 
-    std::cout << "File Large Enough" << std::endl;
 
     fseek(relFile, 0x0020B448, SEEK_SET);
-    std::cout << ftell(relFile) << std::endl;
     for(int i = 0; i < 100; ++i){
         writeBigShort(relFile, storyList[i]);
         fseek(relFile, 2, SEEK_CUR);
-        std::cout << storyList[i] << " ";
     }
-    std::cout << std::endl;
 
     fclose(relFile);
-    std::cout << "Done Writing" << std::endl;
+    createAlert(QString("Done writing to file"));
 }
 
 void MainWindow::generateAndWriteToFile(){
-
+    generateButtonClicked();
+    if(generated){
+        writeToFile();
+    }
 }
 
 void MainWindow::writeBigShort(FILE* file, int number){
     putc((number >> 8), file);
     putc((number), file);
+}
+
+void MainWindow::createAlert(QString message){
+    QMessageBox msgBox;
+    msgBox.setText(message);
+    msgBox.exec();
 }

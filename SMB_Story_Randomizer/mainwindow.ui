@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>781</width>
-    <height>474</height>
+    <width>690</width>
+    <height>480</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -18,7 +18,7 @@
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>20</y>
+      <y>10</y>
       <width>51</width>
       <height>51</height>
      </rect>
@@ -32,17 +32,20 @@
      <string>Seed</string>
     </property>
     <property name="alignment">
-     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+     <set>Qt::AlignBottom|Qt::AlignRight|Qt::AlignTrailing</set>
     </property>
    </widget>
    <widget class="QTextEdit" name="seedTextEdit">
     <property name="geometry">
      <rect>
       <x>70</x>
-      <y>10</y>
+      <y>40</y>
       <width>104</width>
-      <height>71</height>
+      <height>21</height>
      </rect>
+    </property>
+    <property name="verticalScrollBarPolicy">
+     <enum>Qt::ScrollBarAlwaysOff</enum>
     </property>
     <property name="html">
      <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
@@ -58,10 +61,10 @@ p, li { white-space: pre-wrap; }
    <widget class="QLabel" name="label_2">
     <property name="geometry">
      <rect>
-      <x>260</x>
-      <y>30</y>
+      <x>180</x>
+      <y>40</y>
       <width>151</width>
-      <height>51</height>
+      <height>21</height>
      </rect>
     </property>
     <property name="font">
@@ -73,17 +76,20 @@ p, li { white-space: pre-wrap; }
      <string>mkb2.main_loop.rel</string>
     </property>
     <property name="alignment">
-     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+     <set>Qt::AlignBottom|Qt::AlignRight|Qt::AlignTrailing</set>
     </property>
    </widget>
    <widget class="QTextEdit" name="filepathTextEdit">
     <property name="geometry">
      <rect>
-      <x>420</x>
-      <y>20</y>
+      <x>340</x>
+      <y>40</y>
       <width>251</width>
-      <height>71</height>
+      <height>21</height>
      </rect>
+    </property>
+    <property name="verticalScrollBarPolicy">
+     <enum>Qt::ScrollBarAlwaysOff</enum>
     </property>
     <property name="acceptRichText">
      <bool>false</bool>
@@ -92,8 +98,8 @@ p, li { white-space: pre-wrap; }
    <widget class="QPushButton" name="chooseRelButton">
     <property name="geometry">
      <rect>
-      <x>680</x>
-      <y>50</y>
+      <x>600</x>
+      <y>40</y>
       <width>75</width>
       <height>23</height>
      </rect>
@@ -105,8 +111,8 @@ p, li { white-space: pre-wrap; }
    <widget class="QPushButton" name="generateButton">
     <property name="geometry">
      <rect>
-      <x>60</x>
-      <y>90</y>
+      <x>70</x>
+      <y>70</y>
       <width>75</width>
       <height>23</height>
      </rect>
@@ -118,8 +124,8 @@ p, li { white-space: pre-wrap; }
    <widget class="QPushButton" name="writeButton">
     <property name="geometry">
      <rect>
-      <x>420</x>
-      <y>100</y>
+      <x>340</x>
+      <y>70</y>
       <width>75</width>
       <height>23</height>
      </rect>
@@ -132,17 +138,23 @@ p, li { white-space: pre-wrap; }
     <property name="geometry">
      <rect>
       <x>60</x>
-      <y>160</y>
-      <width>361</width>
-      <height>192</height>
+      <y>130</y>
+      <width>318</width>
+      <height>281</height>
      </rect>
+    </property>
+    <property name="frameShape">
+     <enum>QFrame::StyledPanel</enum>
+    </property>
+    <property name="horizontalScrollBarPolicy">
+     <enum>Qt::ScrollBarAlwaysOff</enum>
     </property>
    </widget>
    <widget class="QRadioButton" name="alloeDupesRadioButton">
     <property name="geometry">
      <rect>
-      <x>60</x>
-      <y>120</y>
+      <x>70</x>
+      <y>100</y>
       <width>111</width>
       <height>17</height>
      </rect>
@@ -155,7 +167,7 @@ p, li { white-space: pre-wrap; }
     <property name="geometry">
      <rect>
       <x>190</x>
-      <y>130</y>
+      <y>100</y>
       <width>111</width>
       <height>23</height>
      </rect>
@@ -167,8 +179,8 @@ p, li { white-space: pre-wrap; }
    <widget class="QPushButton" name="genAndWriteButton">
     <property name="geometry">
      <rect>
-      <x>520</x>
-      <y>100</y>
+      <x>440</x>
+      <y>70</y>
       <width>161</width>
       <height>23</height>
      </rect>
@@ -183,7 +195,7 @@ p, li { white-space: pre-wrap; }
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>781</width>
+     <width>690</width>
      <height>21</height>
     </rect>
    </property>

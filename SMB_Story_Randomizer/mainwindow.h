@@ -12,6 +12,7 @@
 #include <string>
 #include <QFileDialog>
 #include <stdio.h>
+#include <QMessageBox>
 
 namespace Ui {
 class MainWindow;
@@ -34,10 +35,12 @@ private:
     void setupTable();
     void setupStandardStageNames();
     void writeBigShort(FILE* file, int number);
+    void createAlert(QString message);
 
     int storyList[100];
     int storyIdList[100];
     bool storyListVisible = true;
+    bool generated = false;
     QRadioButton* allowDupesRadioButton;
     QTextEdit* seedTextEdit;
     QTextEdit* filepathTextEdit;
