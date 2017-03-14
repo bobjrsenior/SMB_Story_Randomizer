@@ -28,6 +28,7 @@ public:
     void setup();
     void setSeed(uint32_t seed);
     void setRelPath(char* relPath);
+    void setCMD(bool option);
 
 private:
     Ui::MainWindow *ui;
@@ -43,6 +44,7 @@ private:
     int storyIdList[100];
     bool storyListVisible = true;
     bool generated = false;
+    bool cmd = false;
     QRadioButton* allowDupesRadioButton;
     QTextEdit* seedTextEdit;
     QTextEdit* filepathTextEdit;

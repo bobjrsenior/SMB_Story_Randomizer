@@ -236,9 +236,14 @@ void MainWindow::writeBigShort(FILE* file, int number){
 }
 
 void MainWindow::createAlert(QString message){
-    QMessageBox msgBox;
-    msgBox.setText(message);
-    msgBox.exec();
+    if(!cmd){
+        QMessageBox msgBox;
+        msgBox.setText(message);
+        msgBox.exec();
+    }
+    else{
+        std::cout << message.toStdString() << std::endl;
+    }
 }
 
 void MainWindow::setSeed(uint32_t seed){
@@ -250,4 +255,8 @@ void MainWindow::setSeed(uint32_t seed){
 void MainWindow::setRelPath(char* relPath){
     QString qRelPath = QString::fromUtf8(relPath, (int) strlen(relPath));
     filepathTextEdit->setText(qRelPath);
+}
+
+void MainWindow::setCMD(bool option){
+    cmd = option;
 }
