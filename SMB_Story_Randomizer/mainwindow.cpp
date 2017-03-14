@@ -240,3 +240,14 @@ void MainWindow::createAlert(QString message){
     msgBox.setText(message);
     msgBox.exec();
 }
+
+void MainWindow::setSeed(uint32_t seed){
+    QString seedString = QString::number(seed);
+
+    seedTextEdit->setText(seedString);
+}
+
+void MainWindow::setRelPath(char* relPath){
+    QString qRelPath = QString::fromUtf8(relPath, (int) strlen(relPath));
+    filepathTextEdit->setText(qRelPath);
+}

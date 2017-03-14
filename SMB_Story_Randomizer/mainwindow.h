@@ -26,6 +26,8 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
     void setup();
+    void setSeed(uint32_t seed);
+    void setRelPath(char* relPath);
 
 private:
     Ui::MainWindow *ui;
@@ -55,6 +57,8 @@ private slots:
     void toggleStoryListDisplay();
     void chooseRelFile();
     void writeToFile();
+
+public slots:
     void generateAndWriteToFile();
 
 
