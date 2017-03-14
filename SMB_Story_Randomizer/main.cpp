@@ -90,11 +90,11 @@ int main(int argc, char *argv[])
 void displayHelp(){
     //QTextStream ts(stdout, QIODevice::WriteOnly);
     std::cout << "Usage" << '\n'
-    << "SMB_Story_Randomizer.exe [OPTION...]" << '\n'
+    << "\tSMB_Story_Randomizer.exe [OPTION...]" << '\n'
     << "Options:" << '\n'
-    << "-h Show this output" << '\n'
-    << "-s <NUMBER> Set the seed to be used for the randomizer (unsigned int)" << '\n'
-    << "-r <REL FILE Set the mkb2.main_loop.rel rel file to be used" << std::endl;
+    << "\t-h Show this output" << '\n'
+    << "\t-s <NUMBER> Set the seed to be used for the randomizer (unsigned int)" << '\n'
+    << "\t-r <REL FILE Set the mkb2.main_loop.rel rel file to be used" << std::endl;
     //ts.flush();
 
 }
