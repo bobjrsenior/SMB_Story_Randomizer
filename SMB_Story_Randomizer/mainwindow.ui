@@ -189,6 +189,19 @@ p, li { white-space: pre-wrap; }
      <string>Generate And Write To File</string>
     </property>
    </widget>
+   <widget class="QPushButton" name="importCustomStageNames">
+    <property name="geometry">
+     <rect>
+      <x>340</x>
+      <y>100</y>
+      <width>201</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Import Custom Stage Names (usa.str)</string>
+    </property>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">

@@ -20,6 +20,8 @@ void MainWindow::setup(){
 
     QPushButton* genAndWriteButton = findChild<QPushButton*>("genAndWriteButton");
 
+    QPushButton* importStageNamesButton = findChild<QPushButton*>("importCustomStageNames");
+
     seedTextEdit = findChild<QTextEdit*>("seedTextEdit");
 
     filepathTextEdit = findChild<QTextEdit*>("filepathTextEdit");
@@ -50,6 +52,8 @@ void MainWindow::setup(){
     connect(writeToFileButton, SIGNAL(clicked()), this, SLOT(writeToFile()));
 
     connect(genAndWriteButton, SIGNAL(clicked()), this, SLOT(generateAndWriteToFile()));
+
+    connect(importStageNamesButton, SIGNAL(clicked()), this, SLOT(importCustomStageNames()));
 }
 
 MainWindow::~MainWindow()
@@ -121,10 +125,13 @@ void MainWindow::generateButtonClicked(){
     }
 
     for(int i = 0; i < 100; ++i){
-        if(storyList[i] >= 0 && storyList[i] <= 420){
-            dataModel->setItem(i, 2, new QStandardItem(QString::number(storyList[i])));
+        dataModel->setItem(i, 2, new QStandardItem(QString::number(storyList[i])));
 
+        if(storyList[i] >= 0 && storyList[i] < stageNames.length()){
             dataModel->setItem(i, 1, new QStandardItem(stageNames[storyList[i]]));
+        }
+        else{
+            dataModel->setItem(i, 1, new QStandardItem(QString("N/A")));
         }
     }
 
@@ -157,8 +164,42 @@ void MainWindow::generateStoryListWithoutDupes(){
 }
 
 void MainWindow::setupStandardStageNames(){
-    stageNames = standardStageNames;
+    stageNames.clear();
+    for(int i = 0; i < 420; ++i){
+        stageNames << standardStageNames[i];
+    }
+}
 
+void MainWindow::importCustomStageNames(){
+    QString filename = QFileDialog::getOpenFileName(this, tr("Open Custom Stage Names Files"), NULL, tr("Stage Names (*.str);;All Files (*.*)"));
+    if(filename.isNull()){
+        return;
+    }
+    std::string stdFilename = filename.toStdString();
+    std::ifstream file(stdFilename);
+    std::cout << "G: " << stdFilename << std::endl;
+    if(!file.good()){
+        createAlert(QString("Failed To Import Stage Names"));
+        return;
+    }
+    stageNames.clear();
+    int index = 0;
+    while(file.good()){
+        std::string line;
+        std::getline(file, line);
+        if(line.length() == 0){
+            line = " ";
+        }
+
+        stageNames << QString(line.c_str());
+        ++index;
+    }
+    file.close();
+    createAlert(QString("Imported Stage Names"));
+
+    if(generated){
+        generateButtonClicked();
+    }
 }
 
 void MainWindow::toggleStoryListDisplay(){
