@@ -26,7 +26,15 @@ void MainWindow::setup(){
 
     filepathTextEdit = findChild<QTextEdit*>("filepathTextEdit");
 
-    allowDupesRadioButton = findChild<QRadioButton*>("alloeDupesRadioButton");
+    allowDupesCheckbox = findChild<QCheckBox*>("allowDupesCheckbox");
+
+    onlyStoryRadioButton = findChild<QRadioButton*>("onlyStoryRadioButton");
+
+    onlyChallengeRadioButton = findChild<QRadioButton*>("OnlyChallengeRadioButton");
+
+    storyAndChallengeRadioButton = findChild<QRadioButton*>("StoryAndChallengeRadioButton");
+
+    allLevelsRadioButton = findChild<QRadioButton*>("allLevelsRadioButton");
 
     storyListTableView = findChild<QTableView*>("storyListTableView");
     storyListTableView->setEditTriggers(QAbstractItemView::NoEditTriggers);
@@ -62,7 +70,7 @@ MainWindow::~MainWindow()
 }
 
 void MainWindow::setupTable(){
-    dataModel = new QStandardItemModel(100, 3, this);
+    dataModel = new QStandardItemModel(STORY_COUNT, 3, this);
     storyListTableView->verticalHeader()->setVisible(false);
 
     dataModel->setHorizontalHeaderItem(0, new QStandardItem(QString("Story Location")));
@@ -70,7 +78,7 @@ void MainWindow::setupTable(){
     dataModel->setHorizontalHeaderItem(2, new QStandardItem(QString("Stage ID")));
 
 
-    for(int i = 0; i < 100; ++i){
+    for(int i = 0; i < STORY_COUNT; ++i){
         std::string concat = std::to_string(i / 10 + 1) + "-" + std::to_string(i % 10 + 1);
         dataModel->setItem(i, 0, new QStandardItem(QString(concat.c_str())));
     }
@@ -79,27 +87,49 @@ void MainWindow::setupTable(){
 }
 
 void MainWindow::generateIdList(){
-    int i = 0;
-    for( ; i < 68; ++i){
-        storyIdList[i] = i + 1;
+
+    // Story IDs
+    int storyOnlyCounter = 0;
+    for( ; storyOnlyCounter < 68; ++storyOnlyCounter){
+        storyIdList[storyOnlyCounter] = storyOnlyCounter + 1;
+        storyAndChallengeIdList[storyOnlyCounter] = storyOnlyCounter + 1;
     }
 
-    storyIdList[i++] = 201;
-    storyIdList[i++] = 202;
-    storyIdList[i++] = 203;
-    storyIdList[i++] = 204;
+    int StoryChallengeCounter = storyOnlyCounter;
 
-    for(int j = 231; j <= 239; ++i, ++j){
-        storyIdList[i] = j;
+    storyIdList[storyOnlyCounter++] = 201;
+    storyIdList[storyOnlyCounter++] = 202;
+    storyIdList[storyOnlyCounter++] = 203;
+    storyIdList[storyOnlyCounter++] = 204;
+
+
+    for(int j = 231; j <= 239; ++storyOnlyCounter, ++j){
+        storyIdList[storyOnlyCounter] = j;
     }
 
-    for(int j = 281; j <= 289; ++i, ++j){
-        storyIdList[i] = j;
+    for(int j = 281; j <= 289; ++storyOnlyCounter, ++j){
+        storyIdList[storyOnlyCounter] = j;
     }
 
-    for(int j = 341; j <= 350; ++i, ++j){
-        storyIdList[i] = j;
+    for(int j = 341; j <= 350; ++storyOnlyCounter, ++j, ++StoryChallengeCounter){
+        storyIdList[storyOnlyCounter] = j;
+        storyAndChallengeIdList[StoryChallengeCounter] = j;
     }
+
+    // Challenge IDs
+
+    for(int j = 201; j <= 340; ++j, ++storyOnlyCounter, ++StoryChallengeCounter){
+        challengeIdList[j - 201] = j;
+        storyAndChallengeIdList[StoryChallengeCounter] = j;
+    }
+
+
+    // All Level IDs
+
+    for(int j = 1; j <= 420; ++j){
+        allLevelsIdList[j - 1] = j;
+    }
+
 }
 
 void MainWindow::generateButtonClicked(){
@@ -115,13 +145,34 @@ void MainWindow::generateButtonClicked(){
         return;
     }
 
-    srand(seed);
+    int *idList;
+    int length;
 
-    if(allowDupesRadioButton->isChecked()){
-        generateStoryListWithDupes();
+    if(onlyStoryRadioButton->isChecked()){
+        idList = storyIdList;
+        length = STORY_COUNT;
+    }
+    else if(onlyChallengeRadioButton->isChecked()){
+        idList = challengeIdList;
+        length = CHALLENGE_COUNT;
+    }
+    else if(storyAndChallengeRadioButton->isChecked()){
+        idList = storyAndChallengeIdList;
+        length = STORY_AND_CHALLENGE_COUNT;
     }
     else{
-        generateStoryListWithoutDupes();
+        idList = allLevelsIdList;
+        length = ALL_LEVEL_COUNT;
+    }
+
+
+    srand(seed);
+
+    if(allowDupesCheckbox->isChecked()){
+        generateStoryListWithDupes(idList, length);
+    }
+    else{
+        generateStoryListWithoutDupes(idList, length);
     }
 
     for(int i = 0; i < 100; ++i){
@@ -139,33 +190,34 @@ void MainWindow::generateButtonClicked(){
 
 }
 
-void MainWindow::generateStoryListWithDupes(){
+void MainWindow::generateStoryListWithDupes(int *idList, int count){
 
-    for(int i = 0; i < 100; ++i){
-        storyList[i] = storyIdList[rand() % 100];
+    for(int i = 0; i < STORY_COUNT; ++i){
+        storyList[i] = idList[rand() % count];
     }
 
 }
 
-void MainWindow::generateStoryListWithoutDupes(){
-    int copyList[100];
+void MainWindow::generateStoryListWithoutDupes(int *idList, int count){
+    int *copyList = new int[count];
 
-    for(int i = 0; i < 100; ++i){
-        copyList[i] = storyIdList[i];
+    for(int i = 0; i < count; ++i){
+        copyList[i] = idList[i];
     }
 
-    for(int i = 0; i < 100; ++i){
-        int index = rand() % (100 - i);
+    for(int i = 0; i < STORY_COUNT; ++i){
+        int index = rand() % (count - i);
         storyList[i] = copyList[index];
-        copyList[index] = copyList[100 - 1 - i];
-        copyList[100 - 1 - i] = storyList[i];
+        copyList[index] = copyList[count - 1 - i];
+        copyList[count - 1 - i] = storyList[i];
     }
 
+    delete [] copyList;
 }
 
 void MainWindow::setupStandardStageNames(){
     stageNames.clear();
-    for(int i = 0; i < 420; ++i){
+    for(int i = 0; i < ALL_LEVEL_COUNT; ++i){
         stageNames << standardStageNames[i];
     }
 }
@@ -255,7 +307,7 @@ void MainWindow::writeToFile(){
 
 
     fseek(relFile, 0x0020B448, SEEK_SET);
-    for(int i = 0; i < 100; ++i){
+    for(int i = 0; i < STORY_COUNT; ++i){
         writeBigShort(relFile, storyList[i]);
         fseek(relFile, 2, SEEK_CUR);
     }

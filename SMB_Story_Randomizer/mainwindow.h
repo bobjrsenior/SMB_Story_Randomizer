@@ -16,7 +16,13 @@
 #include <fstream>
 #include <QList>
 
+#define STORY_COUNT 100
+#define CHALLENGE_COUNT 140
+#define STORY_AND_CHALLENGE_COUNT 218
+#define ALL_LEVEL_COUNT 420
+
 namespace Ui {
+
 class MainWindow;
 }
 
@@ -35,19 +41,26 @@ public:
 private:
     Ui::MainWindow *ui;
     void generateIdList();
-    void generateStoryListWithDupes();
-    void generateStoryListWithoutDupes();
+    void generateStoryListWithDupes(int *idList, int count);
+    void generateStoryListWithoutDupes(int *idList, int count);
     void setupTable();
     void setupStandardStageNames();
     void writeBigShort(FILE* file, int number);
     void createAlert(QString message);
 
-    int storyList[100];
-    int storyIdList[100];
+    int storyList[STORY_COUNT];
+    int storyIdList[STORY_COUNT];
+    int challengeIdList[CHALLENGE_COUNT];
+    int storyAndChallengeIdList[STORY_AND_CHALLENGE_COUNT];
+    int allLevelsIdList[ALL_LEVEL_COUNT];
     bool storyListVisible = true;
     bool generated = false;
     bool cmd = false;
-    QRadioButton* allowDupesRadioButton;
+    QCheckBox* allowDupesCheckbox;
+    QRadioButton* onlyStoryRadioButton;
+    QRadioButton* onlyChallengeRadioButton;
+    QRadioButton* storyAndChallengeRadioButton;
+    QRadioButton* allLevelsRadioButton;
     QTextEdit* seedTextEdit;
     QTextEdit* filepathTextEdit;
     QTableView* storyListTableView;
