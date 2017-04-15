@@ -24,7 +24,7 @@ void MainWindow::setup(){
 
     seedTextEdit = findChild<QTextEdit*>("seedTextEdit");
 
-    filepathTextEdit = findChild<QTextEdit*>("filepathTextEdit");
+    filepathLineEdit = findChild<QLineEdit*>("filepathLineEdit");
 
     allowDupesCheckbox = findChild<QCheckBox*>("allowDupesCheckbox");
 
@@ -148,15 +148,15 @@ void MainWindow::generateButtonClicked(){
     int *idList;
     int length;
 
-    if(onlyStoryRadioButton->isChecked()){
+    if((levels == -1 && onlyStoryRadioButton->isChecked()) || levels == 0){
         idList = storyIdList;
         length = STORY_COUNT;
     }
-    else if(onlyChallengeRadioButton->isChecked()){
+    else if((levels == -1 && onlyChallengeRadioButton->isChecked()) || levels == 1){
         idList = challengeIdList;
         length = CHALLENGE_COUNT;
     }
-    else if(storyAndChallengeRadioButton->isChecked()){
+    else if((levels == -1 && storyAndChallengeRadioButton->isChecked()) || levels == 2){
         idList = storyAndChallengeIdList;
         length = STORY_AND_CHALLENGE_COUNT;
     }
@@ -270,7 +270,7 @@ void MainWindow::chooseRelFile(){
         return;
     }
 
-    filepathTextEdit->setText(filename);
+    filepathLineEdit->setText(filename);
 }
 
 void MainWindow::writeToFile(){
@@ -279,7 +279,7 @@ void MainWindow::writeToFile(){
         return;
     }
 
-    QString qFilename = filepathTextEdit->toPlainText();
+    QString qFilename = filepathLineEdit->text();
 
     if(qFilename.isEmpty() || qFilename.isNull()){
         createAlert(QString("No Rel Path Given"));
@@ -299,7 +299,7 @@ void MainWindow::writeToFile(){
     filesize = ftell(relFile);
     fseek(relFile, 0, SEEK_SET);
 
-    if(filesize < 0x0020B448 + (4 * 100)){
+    if(filesize < 0x0020B448 + (4 * STORY_COUNT)){
         fclose(relFile);
         createAlert(QString("File not big enough. Is this the right file (mkb2.main_loop.rel)?"));
         return;
@@ -347,9 +347,13 @@ void MainWindow::setSeed(uint32_t seed){
 
 void MainWindow::setRelPath(char* relPath){
     QString qRelPath = QString::fromUtf8(relPath, (int) strlen(relPath));
-    filepathTextEdit->setText(qRelPath);
+    filepathLineEdit->setText(qRelPath);
 }
 
 void MainWindow::setCMD(bool option){
     cmd = option;
+}
+
+void MainWindow::setLevels(int levels){
+    this->levels = levels;
 }

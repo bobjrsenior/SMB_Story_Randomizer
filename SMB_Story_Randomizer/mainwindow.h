@@ -37,6 +37,7 @@ public:
     void setSeed(uint32_t seed);
     void setRelPath(char* relPath);
     void setCMD(bool option);
+    void setLevels(int levels);
 
 private:
     Ui::MainWindow *ui;
@@ -56,13 +57,14 @@ private:
     bool storyListVisible = true;
     bool generated = false;
     bool cmd = false;
+    int levels = -1;
     QCheckBox* allowDupesCheckbox;
     QRadioButton* onlyStoryRadioButton;
     QRadioButton* onlyChallengeRadioButton;
     QRadioButton* storyAndChallengeRadioButton;
     QRadioButton* allLevelsRadioButton;
     QTextEdit* seedTextEdit;
-    QTextEdit* filepathTextEdit;
+    QLineEdit* filepathLineEdit;
     QTableView* storyListTableView;
     QStandardItemModel* dataModel;
     QList<QString> stageNames;

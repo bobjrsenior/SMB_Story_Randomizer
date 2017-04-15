@@ -79,22 +79,6 @@ p, li { white-space: pre-wrap; }
      <set>Qt::AlignBottom|Qt::AlignRight|Qt::AlignTrailing</set>
     </property>
    </widget>
-   <widget class="QTextEdit" name="filepathTextEdit">
-    <property name="geometry">
-     <rect>
-      <x>340</x>
-      <y>40</y>
-      <width>251</width>
-      <height>21</height>
-     </rect>
-    </property>
-    <property name="verticalScrollBarPolicy">
-     <enum>Qt::ScrollBarAlwaysOff</enum>
-    </property>
-    <property name="acceptRichText">
-     <bool>false</bool>
-    </property>
-   </widget>
    <widget class="QPushButton" name="chooseRelButton">
     <property name="geometry">
      <rect>
@@ -255,6 +239,16 @@ p, li { white-space: pre-wrap; }
     </property>
     <property name="text">
      <string>Allow Duplicates</string>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="filepathLineEdit">
+    <property name="geometry">
+     <rect>
+      <x>340</x>
+      <y>40</y>
+      <width>251</width>
+      <height>20</height>
+     </rect>
     </property>
    </widget>
   </widget>
