@@ -9,6 +9,7 @@ Open the executable and the GUI will popup
     Usage
         SMB_Story_Randomizer.exe [OPTION...]
     Options:
-        -h Show this output
-        -s <NUMBER> Set the seed to be used for the randomizer (unsigned int)
-        -r <REL FILE Set the mkb2.main_loop.rel rel file to be used
+        -help Show this output
+        -seed <NUMBER> Set the seed to be used for the randomizer (unsigned int)
+        -rel <REL FILE> Set the mkb2.main_loop.rel rel file to be used
+        -levels <LEVEL_TYPE> Set of levels to retrieve from (story, challenge, storyandchallenge, all)
